@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RobustSpeechFlow — Demo Page</title>
+  <meta name="description" content="RobustSpeechFlow: Learning Robust Text-to-Speech Trajectories via Augmentation-based Contrastive Flow Matching">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       SVG Icon Sprites
+       ============================================================ -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="icon-paper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+    </symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/>
+    </symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"/>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+    </symbol>
+    <symbol id="icon-file-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+    </symbol>
+  </svg>
+
+  <!-- Background effects -->
+  <div class="noise-overlay"></div>
+  <div class="bg-grid"></div>
+
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <span class="logo">RobustSpeechFlow</span>
+      <ul>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#augmentation">Augmentation</a></li>
+        <li><a href="#demos">Demos</a></li>
+        <li><a href="#benchmark">ZERO500</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       Hero
+       ============================================================ -->
+  <header class="hero">
+    <div class="container">
+      <div class="badge fade-in">
+        <span class="dot"></span>
+        Submitted to Interspeech 2026
+      </div>
+      <h1 class="fade-in">RobustSpeechFlow</h1>
+      <p class="subtitle fade-in">
+        Learning Robust Text-to-Speech Trajectories via Augmentation-based Contrastive Flow Matching
+      </p>
+      <p class="authors fade-in">Anonymous Authors</p>
+      <div class="keywords fade-in">
+        <span class="kw-tag">text-to-speech</span>
+        <span class="kw-tag">zero-shot TTS</span>
+        <span class="kw-tag">flow matching</span>
+        <span class="kw-tag">alignment robustness</span>
+        <span class="kw-tag">contrastive learning</span>
+      </div>
+      <div class="links fade-in">
+        <a href="#" class="btn btn-primary">
+          <svg width="18" height="18"><use href="#icon-paper"/></svg>
+          Paper (Coming Soon)
+        </a>
+        <a href="#" class="btn btn-outline">
+          <svg width="18" height="18"><use href="#icon-code"/></svg>
+          Code (Coming Soon)
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ============================================================
+       Key Highlights
+       ============================================================ -->
+  <div class="highlights">
+    <div class="container">
+      <div class="highlights-grid">
+        <div class="highlight-card fade-in">
+          <div class="stat-value">1.38%</div>
+          <div class="stat-label">WER on Seed-TTS-eval</div>
+          <div class="stat-detail">1.44 &rarr; 1.38 (best across all systems)</div>
+        </div>
+        <div class="highlight-card fade-in">
+          <div class="stat-value">0.06B</div>
+          <div class="stat-label">Parameters</div>
+          <div class="stat-detail">5&ndash;25&times; smaller than competitors</div>
+        </div>
+        <div class="highlight-card fade-in">
+          <div class="stat-value">27%</div>
+          <div class="stat-label">CER Reduction (EN)</div>
+          <div class="stat-detail">0.48 &rarr; 0.35 at NFE=24</div>
+        </div>
+        <div class="highlight-card fade-in">
+          <div class="stat-value">30%</div>
+          <div class="stat-label">CER Reduction (KO)</div>
+          <div class="stat-detail">0.81 &rarr; 0.57 at NFE=24</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       Abstract
+       ============================================================ -->
+  <section id="abstract">
+    <div class="container">
+      <div class="section-label">Abstract</div>
+      <div class="abstract-card fade-in">
+        <p>
+          Flow-matching-based text-to-speech (TTS) achieves strong zero-shot speaker similarity and naturalness,
+          but may fail to read text correctly due to skip and repeat errors from imperfect text&ndash;speech alignment.
+          We propose <strong>RobustSpeechFlow</strong>, a training strategy that improves alignment robustness by
+          extending contrastive flow matching with TTS failure-mode negatives that simulate repeated or skipped
+          pronunciations, words, and short phrases. The method requires no additional models or datasets and
+          integrates into existing FM-TTS pipelines. On Seed-TTS-eval, RobustSpeechFlow reduces the WER from
+          1.44 in the baseline to 1.38 with only 0.06B parameters, demonstrating strong intelligibility in a
+          compact FM-TTS model. On our newly constructed benchmark, it consistently improves intelligibility
+          over the baseline; at NFE=24, it reduces English CER from 0.48% to 0.35% and Korean CER from 0.81% to 0.57%.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  
+
+  <!-- ============================================================
+       Results
+       ============================================================ -->
+  <section id="results">
+    <div class="container">
+      <div class="section-label">Experimental Results</div>
+      <h2 class="section-title fade-in">Quantitative Evaluation</h2>
+      <p class="section-desc fade-in">
+        We evaluate on the public Seed-TTS-eval benchmark and our newly constructed ZERO500 multilingual benchmark.
+      </p>
+
+      <div class="results-grid">
+
+        <!-- ── Table 1: Seed-TTS-eval ── -->
+        <div class="result-block fade-in">
+          <div class="block-header">
+            <div class="icon">T1</div>
+            <h3>Performance on Seed-TTS-eval Benchmark</h3>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Params</th>
+                  <th>WER &darr;</th>
+                  <th>SIM &uarr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>MegaTTS3</td>
+                  <td>0.5B</td>  <td>2.79</td>  <td class="second-val">0.77</td>
+                </tr>
+                <tr>
+                  <td>Seed-TTS<sub>DiT</sub></td>
+                  <td>&mdash;</td>  <td>1.73</td>  <td class="best-val">0.79</td>
+                </tr>
+                <tr>
+                  <td>DiTAR</td>
+                  <td>0.6B</td>  <td>1.69</td>  <td>0.74</td>
+                </tr>
+                <tr>
+                  <td>MiniMax-Speech</td>
+                  <td>&mdash;</td>  <td>1.65</td>  <td>0.69</td>
+                </tr>
+                <tr>
+                  <td>F5-TTS</td>
+                  <td>0.3B</td>  <td>2.00</td>  <td>0.67</td>
+                </tr>
+                <tr>
+                  <td>CosyVoice3</td>
+                  <td>1.5B</td>  <td>2.22</td>  <td>0.72</td>
+                </tr>
+                <tr>
+                  <td>Spark-TTS</td>
+                  <td>0.5B</td>  <td>3.14</td>  <td>0.57</td>
+                </tr>
+                <tr>
+                  <td>OpenAudio S1-Mini</td>
+                  <td>0.5B</td>  <td>1.94</td>  <td>0.55</td>
+                </tr>
+                <tr>
+                  <td>IndexTTS2</td>
+                  <td>1.5B</td>  <td>2.23</td>  <td>0.71</td>
+                </tr>
+                <tr>
+                  <td>VibeVoice</td>
+                  <td>1.5B</td>  <td>3.04</td>  <td>0.69</td>
+                </tr>
+                <tr>
+                  <td>VoxCPM-Emilia</td>
+                  <td>0.5B</td>  <td>2.34</td>  <td>0.68</td>
+                </tr>
+                <tr>
+                  <td>VoxCPM</td>
+                  <td>0.5B</td>  <td>1.85</td>  <td>0.73</td>
+                </tr>
+                <tr class="table-sep"><td colspan="4"></td></tr>
+                <tr>
+                  <td>Baseline</td>
+                  <td><strong>0.06B</strong></td>
+                  <td>1.44</td>
+                  <td>0.60</td>
+                </tr>
+                <tr>
+                  <td>ContrastiveFM</td>
+                  <td><strong>0.06B</strong></td>
+                  <td class="second-val">1.41</td>
+                  <td>0.60</td>
+                </tr>
+                <tr class="row-ours">
+                  <td><strong>RobustSpeechFlow</strong></td>
+                  <td><strong>0.06B</strong></td>
+                  <td class="best-val">1.38</td>
+                  <td>0.60</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── Table 2: ZERO500 ── -->
+        <div class="result-block fade-in">
+          <div class="block-header">
+            <div class="icon">T2</div>
+            <h3>Results on ZERO500 at 500k Steps (%)</h3>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>NFE</th>
+                  <th>EN CER &darr;</th>
+                  <th>EN WER &darr;</th>
+                  <th>KO CER &darr;</th>
+                  <th>KO WER &darr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Baseline</td>
+                  <td>12</td>  <td>0.55</td>  <td>1.25</td>  <td>0.93</td>  <td>8.46</td>
+                </tr>
+                <tr>
+                  <td>Baseline</td>
+                  <td>24</td>  <td>0.48</td>  <td>1.18</td>  <td>0.81</td>  <td>8.40</td>
+                </tr>
+                <tr>
+                  <td>ContrastiveFM</td>
+                  <td>12</td>  <td>0.41</td>  <td>1.10</td>  <td>0.77</td>  <td>7.92</td>
+                </tr>
+                <tr>
+                  <td>ContrastiveFM</td>
+                  <td>24</td>  <td class="second-val">0.39</td>  <td class="second-val">1.06</td>  <td class="second-val">0.65</td>  <td>7.72</td>
+                </tr>
+                <tr class="table-sep"><td colspan="6"></td></tr>
+                <tr class="row-ours">
+                  <td><strong>RobustSpeechFlow</strong></td>
+                  <td>12</td>
+                  <td>0.43</td>
+                  <td>1.14</td>
+                  <td class="best-val">0.57</td>
+                  <td class="second-val">7.59</td>
+                </tr>
+                <tr class="row-ours">
+                  <td><strong>RobustSpeechFlow</strong></td>
+                  <td>24</td>
+                  <td class="best-val">0.35</td>
+                  <td class="best-val">1.03</td>
+                  <td class="best-val">0.57</td>
+                  <td class="best-val">7.45</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── Figure: CER Training Curves ── -->
+        <div class="result-block fade-in">
+          <div class="block-header">
+            <div class="icon">F1</div>
+            <h3>CER (%) over Training Steps on ZERO500</h3>
+          </div>
+          <div class="figure-grid">
+            <div>
+              <img src="assets/zero500_en_nfe12_cer.png" alt="ZERO500-en CER at NFE=12">
+              <div class="fig-label">(a) ZERO500-en CER (%), NFE=12</div>
+            </div>
+            <div>
+              <img src="assets/zero500_en_nfe24_cer.png" alt="ZERO500-en CER at NFE=24">
+              <div class="fig-label">(b) ZERO500-en CER (%), NFE=24</div>
+            </div>
+            <div>
+              <img src="assets/zero500_ko_nfe12_cer.png" alt="ZERO500-ko CER at NFE=12">
+              <div class="fig-label">(c) ZERO500-ko CER (%), NFE=12</div>
+            </div>
+            <div>
+              <img src="assets/zero500_ko_nfe24_cer.png" alt="ZERO500-ko CER at NFE=24">
+              <div class="fig-label">(d) ZERO500-ko CER (%), NFE=24</div>
+            </div>
+          </div>
+          <p class="figure-caption">
+            CER (%) over training steps on ZERO500. RobustSpeechFlow shows consistent improvement,
+            especially on Korean and at NFE=24 where it reaches the lowest final CER.
+            Legend: A = Baseline, B = ContrastiveFM, C = RobustSpeechFlow.
+          </p>
+        </div>
+
+      </div><!-- /.results-grid -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       Augmentation Simulation
+       ============================================================ -->
+  <section id="augmentation">
+    <div class="container">
+      <div class="section-label">Hard Negative Augmentation</div>
+      <h2 class="section-title fade-in">What Do Failure-Mode Negatives Sound Like?</h2>
+      <p class="section-desc fade-in">
+        RobustSpeechFlow constructs hard negatives by applying length-preserving <strong>repeat</strong> and
+        <strong>skip</strong> augmentations to the ground-truth speech latent. Below we decode these augmented
+        latents back to audio so you can hear what the model learns to avoid.
+      </p>
+
+      <!-- Augmentation type legend -->
+      <div class="aug-legend fade-in">
+        <div class="aug-legend-item">
+          <span class="aug-tag repeat-tag">Repeat</span>
+          <span>A source span is copied to a different position in the utterance, overwriting
+          the target region and simulating word or phrase repetition. The overall length stays the same.</span>
+        </div>
+        <div class="aug-legend-item">
+          <span class="aug-tag skip-tag">Skip</span>
+          <span>The subsequent latent sequence is shifted forward to overwrite the skipped region,
+          and the remaining tail frames are replaced with a silence latent. This simulates a local skip
+          while preserving the global duration.</span>
+        </div>
+      </div>
+
+      <div class="aug-samples" style="margin-top: 28px;">
+
+        <!-- ── Augmentation Sample 1 ── -->
+        <div class="aug-card fade-in">
+          <div class="aug-header">
+            <span class="demo-number">1</span>
+            <h3>Augmentation Example 1</h3>
+          </div>
+          <div class="aug-text">
+            <div class="label">Original Text (English)</div>
+            "I would have won the Junior Olympics if not for those medaling kids."
+          </div>
+          <div class="aug-audio-grid">
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label original">Original</span>
+              <audio controls preload="none" src="audios/augmentation/sample1/1-org.wav"></audio>
+              <span class="aug-desc">Clean ground-truth speech latent decoded to audio.</span>
+            </div>
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label repeat">Repeat Augmented</span>
+              <audio controls preload="none" src="audios/augmentation/sample1/1-repeat.wav"></audio>
+              <span class="aug-desc">A source span overwrites a different position &mdash; sounds like a word/phrase is repeated.</span>
+            </div>
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label skip">Skip Augmented</span>
+              <audio controls preload="none" src="audios/augmentation/sample1/1-jumpskip.wav"></audio>
+              <span class="aug-desc">A span is removed by shifting later content forward; tail is padded with silence.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Augmentation Sample 2 ── -->
+        <div class="aug-card fade-in">
+          <div class="aug-header">
+            <span class="demo-number">2</span>
+            <h3>Augmentation Example 2</h3>
+          </div>
+          <div class="aug-text">
+            <div class="label">Original Text (Korean)</div>
+            "파이와 아이를 곱한 수로 이를 거듭제곱해서 이를 더하면 영이 된다. 끝없이 순환하는 수와 정체를 나타내지 않는 수가 간결한 궤적을 그리며 한 점에 착지하고 이곳에 일을 더하는 순간 세계는 평화로워진다."
+          </div>
+          <div class="aug-audio-grid">
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label original">Original</span>
+              <audio controls preload="none" src="audios/augmentation/sample2/2-org.wav"></audio>
+              <span class="aug-desc">Clean ground-truth speech latent decoded to audio.</span>
+            </div>
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label repeat">Repeat Augmented</span>
+              <audio controls preload="none" src="audios/augmentation/sample2/2-repeat.wav"></audio>
+              <span class="aug-desc">A source span overwrites a different position &mdash; sounds like a word/phrase is repeated.</span>
+            </div>
+            <div class="aug-audio-cell">
+              <span class="aug-audio-label skip">Skip Augmented</span>
+              <audio controls preload="none" src="audios/augmentation/sample2/2-jumpskip.wav"></audio>
+              <span class="aug-desc">A span is removed by shifting later content forward; tail is padded with silence.</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.aug-samples -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       Audio Demos
+       ============================================================ -->
+  <section id="demos">
+    <div class="container">
+      <div class="section-label">Audio Demos</div>
+      <h2 class="section-title fade-in">Listening Samples</h2>
+      <p class="section-desc fade-in">
+        Compare synthesized speech across Baseline, ContrastiveFM, and RobustSpeechFlow.
+        Each sample shows the ASR-transcribed text and WER/CER for objective comparison.
+      </p>
+
+      <!-- Benchmark filter tabs -->
+      <div class="demo-tabs fade-in">
+        <div class="demo-tab active" data-bench="all">All</div>
+        <div class="demo-tab" data-bench="seed">Seed-TTS-eval</div>
+        <div class="demo-tab" data-bench="z5en">ZERO500-en</div>
+        <div class="demo-tab" data-bench="z5ko">ZERO500-ko</div>
+      </div>
+
+      <!-- ──────────────────────────────────────────────
+           Group 1: Seed-TTS-eval
+           ────────────────────────────────────────────── -->
+      <div class="demo-group fade-in" data-bench="seed">
+        <div class="demo-group-header">
+          <span class="demo-group-badge seed">Seed-TTS-eval</span>
+          <h3>Public Zero-Shot Benchmark (English)</h3>
+        </div>
+        <div class="demo-samples">
+
+          <!-- Seed-eval Sample 1 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">1</span> Seed-TTS-eval Sample 1</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <!-- TODO: replace with actual Seed-TTS-eval sentence -->
+              <p>"Compressed Natural Gas is a domestic energy produced in Western parts of India."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample1/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">WER: 7.7%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample1/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Compressed natural gas is a domestic energy in western parts of India."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample1/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Compressed natural gas is a domestic energy produced in western parts of India."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample1/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Compressed natural gas is a domestic energy produced in western parts of India."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seed-eval Sample 2 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">2</span> Seed-TTS-eval Sample 2</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"The rest of the money can be based on playing time."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample2/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample2/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The rest of the money can be based on playing time."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge mid">WER: 9.1%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample2/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The rest of the money can be... on playing time."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample2/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The rest of the money can be based on playing time."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seed-eval Sample 3 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">3</span> Seed-TTS-eval Sample 3</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"Babele is one of the most popular tourist destinations in the country."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample3/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">WER: 8.3%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample3/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Bab-al-Ayi is one of the most popular tourist destinations in the country."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample3/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Babeli is one of the most popular tourist destinations in the country."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/seed-tts-eval/sample3/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Babeli is one of the most popular tourist destinations in the country."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div><!-- /.demo-samples -->
+      </div><!-- /seed group -->
+
+      <!-- ──────────────────────────────────────────────
+           Group 2: ZERO500-en
+           ────────────────────────────────────────────── -->
+      <div class="demo-group fade-in" data-bench="z5en">
+        <div class="demo-group-header">
+          <span class="demo-group-badge z5en">ZERO500-en</span>
+          <h3>Multilingual Benchmark (English)</h3>
+        </div>
+        <p class="demo-group-note">All reference voices are in-the-wild recordings used exclusively for evaluation and are never included in model training data.</p>
+        <div class="demo-samples">
+
+          <!-- ZERO500-en Sample 1 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">1</span> ZERO500-en Sample 1</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"Well, I kept rehearsing what to say, and it sounded fine in my head. Then I heard my own voice shake, and I panicked a little. Give me a moment, and I’ll try again with a clearer, calmer tone."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_en/sample1/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">WER: 17.9%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample1/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"And it sounded fine in my head. Then I heard my own voice shake, and I panicked a little. Give me a moment, and I'll try again with a clearer, calmer tone."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample1/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Well, I kept rehearsing what to say, and it sounded fine in my head. Then I heard my own voice shake, and I panicked a little. Give me a moment, and I'll try again with a clearer, calmer tone."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample1/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Well, I kept rehearsing what to say, and it sounded fine in my head. Then I heard my own voice shake, and I panicked a little. Give me a moment, and I'll try again with a clearer, calmer tone."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZERO500-en Sample 2 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">2</span> ZERO500-en Sample 2</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"The script sounds natural, but the rhythm drifts in the third sentence and feels rushed."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_en/sample2/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">WER: 13.3%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample2/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The script sounds natural, but it drifts in the third sentence and feels rushed."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample2/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The script sounds natural, but the rhythm drifts in the third sentence and feels rushed."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample2/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"The script sounds natural, but the rhythm drifts in the third sentence and feels rushed."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZERO500-en Sample 3 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">3</span> ZERO500-en Sample 3</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"Well, that was unexpectedly stressful today."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_en/sample3/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">WER: 16.7%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample3/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"well, was unexpectedly stressful today."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample3/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Well, that was unexpectedly stressful today."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">WER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_en/sample3/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"Well, that was unexpectedly stressful today."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.demo-samples -->
+      </div><!-- /z5en group -->
+
+      <!-- ──────────────────────────────────────────────
+           Group 3: ZERO500-ko
+           ────────────────────────────────────────────── -->
+      <div class="demo-group fade-in" data-bench="z5ko">
+        <div class="demo-group-header">
+          <span class="demo-group-badge z5ko">ZERO500-ko</span>
+          <h3>Multilingual Benchmark (Korean)</h3>
+        </div>
+        <p class="demo-group-note">All reference voices are in-the-wild recordings used exclusively for evaluation and are never included in model training data.</p>
+        <div class="demo-samples">
+
+          <!-- ZERO500-ko Sample 1 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">1</span> ZERO500-ko Sample 1</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"음, 빠르게 몇 가지 확인 질문만 드릴게요. 업데이트 이후에 문제가 시작됐는지, 아니면 아무 변화 없이 갑자기 생겼는지 기억나세요? 정확하지 않아도, 추정이라도 말해 주시면 원인 범위를 줄일 수 있습니다."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_ko/sample1/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">CER: 7.4%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample1/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"빠르게 몇 가지 확인 질문만 드릴게요. 업데이트 이후에 문제가 시작됐는지 아니면 아무 변화 없이 갑자기 생겼는지 기억나세요? 정확하지 않아도 말해주시면 원인 범위를 줄일 수 있습니다."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge good">CER: 0.2%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample1/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"음, 빠르게 몇 가지 확인 질문만 드릴게요. 업데이트 이후에 문제가 시작됐는지 아니면 아무 변화 없이 갑자기 생겼는지 기억나세요? 정확하지 않아도 추정이라도 말해주시면 원인 범위를 줄일 수 있습니다."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">CER: 0.2%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample1/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"음, 빠르게 몇 가지 확인 질문만 드릴게요. 업데이트 이후에 문제가 시작됐는지 아니면 아무 변화 없이 갑자기 생겼는지 기억나세요? 정확하지 않아도 추정이라도 말해주시면 원인 범위를 줄일 수 있습니다."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZERO500-ko Sample 2 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">2</span> ZERO500-ko Sample 2</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"음, 네 메시지는 다 읽었어. 지금 바로 답하면 또 말이 꼬일 것 같아, 그래서 잠깐만 숨 고르고 올게. 조금만 기다려 주면, 차분히 이야기하자."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_ko/sample2/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge mid">CER: 7.5%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample2/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"응, 내 메시지는 다 읽었어. 바로 답하면 또 말이 꼬일 것 같아. 그래서 잠깐만 숨 고르고 올게. 조금만 기다려주면 차분히 이야기하자."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge mid">CER: 3.8%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample2/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"응. 내 메시지는 다 읽었어. 지금 바로 답하면 또 말이 꼬일 것 같아. 그래서 잠깐만 숨 고르고 올게. 조금만 기다려주면 차분히 이야기하자."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">CER: 1.9%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample2/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"음 내 메시지는 다 읽었어 지금 바로 답하면 또 말이 꼬일 것 같아 그래서 잠깐만 숨 고르고 올게 조금만 기다려주면 차분히 이야기하자"</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZERO500-ko Sample 3 -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3><span class="demo-number">3</span> ZERO500-ko Sample 3</h3>
+            </div>
+            <div class="demo-text">
+              <div class="label">Input Text</div>
+              <p>"주소 변경은 출고 전까지만 가능하며, 이후에는 배송사로 문의해야 합니다."</p>
+            </div>
+            <div class="audio-grid">
+              <div class="audio-cell">
+                <span class="audio-label ref">Reference</span>
+                <audio controls preload="none" src="audios/zero500_ko/sample3/reference.wav"></audio>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label baseline">Baseline <span class="wer-badge good">CER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample3/baseline.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"주소 변경은 출고 전까지만 가능하며, 이후에는 배송사로 문의해야 합니다."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label contrastive">ContrastiveFM <span class="wer-badge mid">CER: 6.7%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample3/contrastivefm.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"주소 변경은 출고 저지만 가능하며, 이후에는 배송사로 문의해야 합니다."</span>
+                </div>
+              </div>
+              <div class="audio-cell">
+                <span class="audio-label ours">RobustSpeechFlow <span class="wer-badge good">CER: 0.0%</span></span>
+                <audio controls preload="none" src="audios/zero500_ko/sample3/robustspeechflow.wav"></audio>
+                <div class="audio-meta">
+                  <span class="transcript-label">Transcribed</span>
+                  <span class="transcript-text">"주소 변경은 출고 전까지만 가능하며, 이후에는 배송사로 문의해야 합니다."</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.demo-samples -->
+      </div><!-- /z5ko group -->
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ============================================================
+       ZERO500 Benchmark
+       ============================================================ -->
+  <section id="benchmark">
+    <div class="container">
+      <div class="section-label">Resources</div>
+      <h2 class="section-title fade-in">ZERO500 Evaluation Benchmark</h2>
+      <p class="section-desc fade-in">
+        We release ZERO500, a multilingual benchmark designed to stress alignment under diverse speaker,
+        prosody, and text conditions. Each set contains 500 text prompts paired with 50 unique reference voices
+        drawn from game, news, and conversational speech domains. Each reference voice is randomly paired with
+        10 sentences, and each pair is synthesized twice with different random seeds.
+        <strong>All reference voices are in-the-wild recordings used exclusively for evaluation and are never included in model training data.
+        Only text prompts are provided below; reference audio is not publicly released.</strong>
+      </p>
+
+      <div class="download-cards">
+
+        <!-- ── ZERO500-en ── -->
+        <div class="download-card fade-in">
+          <div class="dl-icon">
+            <svg width="24" height="24"><use href="#icon-file-download"/></svg>
+          </div>
+          <h3>ZERO500-en (English)</h3>
+          <p>
+            500 English text prompts covering diverse domains, phonetic challenges,
+            rare words, and complex syntactic structures for robust TTS benchmarking.
+          </p>
+          <div class="meta">
+            <span>
+              <svg width="14" height="14"><use href="#icon-paper"/></svg>
+              500 sentences
+            </span>
+            <span>
+              <svg width="14" height="14"><use href="#icon-download"/></svg>
+              CSV format
+            </span>
+          </div>
+          <a href="eval_sets/ZERO500-en.csv" class="btn-download" download>
+            <svg width="16" height="16"><use href="#icon-download"/></svg>
+            Download ZERO500-en
+          </a>
+        </div>
+
+        <!-- ── ZERO500-ko ── -->
+        <div class="download-card fade-in">
+          <div class="dl-icon">
+            <svg width="24" height="24"><use href="#icon-file-download"/></svg>
+          </div>
+          <h3>ZERO500-ko (Korean)</h3>
+          <p>
+            500 Korean text prompts with varied prosodic patterns, foreign loan words,
+            and domain-diverse content for evaluating multilingual TTS robustness.
+          </p>
+          <div class="meta">
+            <span>
+              <svg width="14" height="14"><use href="#icon-paper"/></svg>
+              500 sentences
+            </span>
+            <span>
+              <svg width="14" height="14"><use href="#icon-download"/></svg>
+              CSV format
+            </span>
+          </div>
+          <a href="eval_sets/ZERO500-ko.csv" class="btn-download" download>
+            <svg width="16" height="16"><use href="#icon-download"/></svg>
+            Download ZERO500-ko
+          </a>
+        </div>
+
+      </div><!-- /.download-cards -->
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       Footer
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <p>RobustSpeechFlow &mdash; Anonymous Authors &mdash; 2025</p>
+      <p style="margin-top: 8px;">
+        Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+</body>
+</html>
